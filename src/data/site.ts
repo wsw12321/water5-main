@@ -41,11 +41,11 @@ export interface SiteProfile {
 export const profile: SiteProfile = {
   name: "五水",
   handle: "water5",
-  role: "USTC 计算机系本科生 / 软件工程与视觉算法开发者",
+  role: "USTC 计算机系本科生 / RoboWalker 视觉算法组成员",
   intro:
     "专注于 C++ 性能优化与机器人视觉自喵系统开发，热爱 Linux 与极客工具构建。",
   background:
-    "中国科学技术大学计算机科学与技术系本科在读，前 RoboMaster 战队视觉算法组成员。我在算法、系统与应用之间寻找问题更清晰、工具更顺手的解法。",
+    "中国科学技术大学计算机科学与技术系本科在读，RoboMaster 战队视觉算法组成员。我在算法、系统与应用之间寻找问题更清晰、工具更顺手的解法。",
   principle:
     "追求高效干净的代码、极致的系统性能与简洁流畅的开发工作流。",
   skills: [
@@ -181,15 +181,15 @@ export const experiences: readonly Experience[] = [
     description: "持续学习计算机科学，并探索软件工程、系统性能与视觉算法。",
   },
   {
-    period: "2025–2026",
-    title: "前 RoboMaster 视觉算法组成员",
+    period: "2025–至今",
+    title: "RoboMaster 视觉算法组成员",
     organization: "校 RoboMaster 战队",
     description: "参与机器人视觉识别、自喵系统调优与工程流程改进。",
   },
 ];
 
 export const siteMeta = {
-  title: "五水 / water5 — 软件工程与视觉算法开发者",
+  title: "五水 / water5 — 中国科学技术大学本科生",
   description:
     "五水（water5）的个人主页：USTC 计算机系本科生，关注 C++ 性能优化、机器人视觉、Linux 与极客工具。",
   url: "https://water555.com/",
