@@ -1,0 +1,121 @@
+---
+import "../styles/global.css";
+import { siteMeta } from "../data/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = siteMeta.title,
+  description = siteMeta.description,
+} = Astro.props;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? siteMeta.url);
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f4f7f9" />
+    <meta name="robots" content="index, follow" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:site_name" content="五水 / water5" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <script is:inline>
+      (() => {
+        const key = "water5-theme";
+        const root = document.documentElement;
+        const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        let saved = null;
+
+        try {
+          saved = window.localStorage.getItem(key);
+        } catch {
+          // Storage can be unavailable in privacy-restricted contexts.
+        }
+
+        root.dataset.theme =
+          saved === "light" || saved === "dark"
+            ? saved
+            : systemDark
+              ? "dark"
+              : "light";
+      })();
+    </script>
+
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+
+    <script>
+      const storageKey = "water5-theme";
+      const root = document.documentElement;
+      const toggle = document.querySelector<HTMLButtonElement>("[data-theme-toggle]");
+      const themeColor = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+      const systemPreference = window.matchMedia("(prefers-color-scheme: dark)");
+
+      function syncThemeControls(theme: "light" | "dark") {
+        const isDark = theme === "dark";
+        if (toggle) {
+          toggle.setAttribute("aria-label", isDark ? "切换到浅色主题" : "切换到深色主题");
+          toggle.setAttribute("title", isDark ? "切换到浅色主题" : "切换到深色主题");
+          toggle.setAttribute("aria-pressed", String(isDark));
+        }
+        themeColor?.setAttribute("content", isDark ? "#071114" : "#f4f7f9");
+      }
+
+      function setTheme(theme: "light" | "dark", remember: boolean) {
+        root.dataset.theme = theme;
+        syncThemeControls(theme);
+
+        if (remember) {
+          try {
+            window.localStorage.setItem(storageKey, theme);
+          } catch {
+            // The visual toggle still works when storage is unavailable.
+          }
+        }
+      }
+
+      function hasSavedTheme() {
+        try {
+          const saved = window.localStorage.getItem(storageKey);
+          return saved === "light" || saved === "dark";
+        } catch {
+          return false;
+        }
+      }
+
+      toggle?.addEventListener("click", () => {
+        const nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
+        setTheme(nextTheme, true);
+      });
+
+      systemPreference.addEventListener("change", (event) => {
+        if (!hasSavedTheme()) {
+          setTheme(event.matches ? "dark" : "light", false);
+        }
+      });
+
+      syncThemeControls(root.dataset.theme === "dark" ? "dark" : "light");
+    </script>
+  </body>
+</html>
