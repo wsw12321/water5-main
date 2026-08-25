@@ -7,8 +7,8 @@ import { experiences, profile, projects, siteMeta } from "../data/site";
 
 const navigation = [
   { label: "About", href: "#about" },
-  { label: "Projects", href: "#projects" },
   { label: "Experience", href: "#experience" },
+  { label: "Projects", href: "#projects" },
   { label: "Contact", href: "#contact" },
 ] as const;
 
@@ -192,10 +192,36 @@ const opensNewWindow = (href: string) => href.startsWith("http");
       </div>
     </section>
 
+    <section class="section experience" id="experience" aria-labelledby="experience-title">
+      <div class="container experience-layout">
+        <header class="section-heading section-heading--stacked">
+          <p class="section-kicker">02 / EXPERIENCE</p>
+          <h2 id="experience-title">一路学习，也一路构建。</h2>
+          <p class="section-summary">持续把赛场与课堂上的问题，变成可以验证、改进和复用的工程经验。</p>
+        </header>
+
+        <ol class="timeline">
+          {experiences.map((item, index) => (
+            <li>
+              <div class="timeline-marker" aria-hidden="true">
+                <span>{String(index + 1).padStart(2, "0")}</span>
+              </div>
+              <div class="timeline-content">
+                <p class="timeline-period">{item.period}</p>
+                <h3>{item.title}</h3>
+                <p class="timeline-org">{item.organization}</p>
+                <p class="timeline-description">{item.description}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
     <section class="section projects" id="projects" aria-labelledby="projects-title">
       <div class="container">
         <header class="section-heading section-heading--projects">
-          <p class="section-kicker">02 / PROJECTS</p>
+          <p class="section-kicker">03 / PROJECTS</p>
           <h2 id="projects-title">把想法写成能用的东西。</h2>
           <p>SELECTED WORK</p>
         </header>
@@ -275,32 +301,6 @@ const opensNewWindow = (href: string) => href.startsWith("http");
             </article>
           ))}
         </div>
-      </div>
-    </section>
-
-    <section class="section experience" id="experience" aria-labelledby="experience-title">
-      <div class="container experience-layout">
-        <header class="section-heading section-heading--stacked">
-          <p class="section-kicker">03 / EXPERIENCE</p>
-          <h2 id="experience-title">一路学习，也一路构建。</h2>
-          <p class="section-summary">持续把赛场与课堂上的问题，变成可以验证、改进和复用的工程经验。</p>
-        </header>
-
-        <ol class="timeline">
-          {experiences.map((item, index) => (
-            <li>
-              <div class="timeline-marker" aria-hidden="true">
-                <span>{String(index + 1).padStart(2, "0")}</span>
-              </div>
-              <div class="timeline-content">
-                <p class="timeline-period">{item.period}</p>
-                <h3>{item.title}</h3>
-                <p class="timeline-org">{item.organization}</p>
-                <p class="timeline-description">{item.description}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
       </div>
     </section>
 
