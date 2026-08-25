@@ -175,6 +175,13 @@ export const projects: readonly Project[] = [
 
 export const experiences: readonly Experience[] = [
   {
+    period: "2026.08",
+    title: "数据算法开发实习生",
+    organization: "深圳南瑞科技有限公司 · 新能源系统产品部",
+    description:
+      "围绕电力巡检模型轻量化开展数据处理、模型训练与单/多教师知识蒸馏实验，并完成实验结果分析与流程整理。",
+  },
+  {
     period: "2025–至今",
     title: "USTC 本科在读",
     organization: "中国科学技术大学 · 计算机科学与技术系",
