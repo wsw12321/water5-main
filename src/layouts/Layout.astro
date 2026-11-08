@@ -18,7 +18,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? siteMeta.url);
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <meta name="color-scheme" content="light dark" />
@@ -42,6 +42,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? siteMeta.url);
       (() => {
         const key = "water5-theme";
         const root = document.documentElement;
+        root.classList.add("js");
         const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
         let saved = null;
 
