@@ -7,10 +7,7 @@ interface Props {
   description?: string;
 }
 
-const {
-  title = siteMeta.title,
-  description = siteMeta.description,
-} = Astro.props;
+const { title = siteMeta.title, description = siteMeta.description } = Astro.props;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? siteMeta.url);
 ---
 
@@ -22,7 +19,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? siteMeta.url);
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#f4f7f9" />
+    <meta name="theme-color" content="#faf9f6" />
     <meta name="robots" content="index, follow" />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -40,24 +37,22 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? siteMeta.url);
 
     <script is:inline>
       (() => {
-        const key = "water5-theme";
         const root = document.documentElement;
-        root.classList.add("js");
-        const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
         let saved = null;
 
         try {
-          saved = window.localStorage.getItem(key);
+          saved = window.localStorage.getItem("water5-theme");
         } catch {
           // Storage can be unavailable in privacy-restricted contexts.
         }
 
-        root.dataset.theme =
+        const dark =
           saved === "light" || saved === "dark"
-            ? saved
-            : systemDark
-              ? "dark"
-              : "light";
+            ? saved === "dark"
+            : window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+        root.classList.add("js");
+        root.dataset.theme = dark ? "dark" : "light";
       })();
     </script>
 
@@ -67,56 +62,52 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? siteMeta.url);
     <slot />
 
     <script>
+      type Theme = "light" | "dark";
+
       const storageKey = "water5-theme";
       const root = document.documentElement;
       const toggle = document.querySelector<HTMLButtonElement>("[data-theme-toggle]");
       const themeColor = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
-      const systemPreference = window.matchMedia("(prefers-color-scheme: dark)");
+      const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
 
-      function syncThemeControls(theme: "light" | "dark") {
-        const isDark = theme === "dark";
-        if (toggle) {
-          toggle.setAttribute("aria-label", isDark ? "切换到浅色主题" : "切换到深色主题");
-          toggle.setAttribute("title", isDark ? "切换到浅色主题" : "切换到深色主题");
-          toggle.setAttribute("aria-pressed", String(isDark));
-        }
-        themeColor?.setAttribute("content", isDark ? "#071114" : "#f4f7f9");
-      }
-
-      function setTheme(theme: "light" | "dark", remember: boolean) {
-        root.dataset.theme = theme;
-        syncThemeControls(theme);
-
-        if (remember) {
-          try {
-            window.localStorage.setItem(storageKey, theme);
-          } catch {
-            // The visual toggle still works when storage is unavailable.
-          }
-        }
-      }
-
-      function hasSavedTheme() {
+      function readSaved(): Theme | null {
         try {
           const saved = window.localStorage.getItem(storageKey);
-          return saved === "light" || saved === "dark";
+          return saved === "light" || saved === "dark" ? saved : null;
         } catch {
-          return false;
+          return null;
+        }
+      }
+
+      function applyTheme(theme: Theme) {
+        const dark = theme === "dark";
+        root.dataset.theme = theme;
+        themeColor?.setAttribute("content", dark ? "#121110" : "#faf9f6");
+
+        if (toggle) {
+          const label = dark ? "切换到浅色主题" : "切换到深色主题";
+          toggle.setAttribute("aria-label", label);
+          toggle.setAttribute("title", label);
+          toggle.setAttribute("aria-pressed", String(dark));
         }
       }
 
       toggle?.addEventListener("click", () => {
-        const nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
-        setTheme(nextTheme, true);
-      });
+        const next: Theme = root.dataset.theme === "dark" ? "light" : "dark";
+        applyTheme(next);
 
-      systemPreference.addEventListener("change", (event) => {
-        if (!hasSavedTheme()) {
-          setTheme(event.matches ? "dark" : "light", false);
+        try {
+          window.localStorage.setItem(storageKey, next);
+        } catch {
+          // The toggle still works for this visit without storage.
         }
       });
 
-      syncThemeControls(root.dataset.theme === "dark" ? "dark" : "light");
+      systemDark.addEventListener("change", (event) => {
+        if (!readSaved()) applyTheme(event.matches ? "dark" : "light");
+      });
+
+      applyTheme(root.dataset.theme === "dark" ? "dark" : "light");
     </script>
   </body>
 </html>

@@ -1,8 +1,16 @@
+import type { ImageMetadata } from "astro";
+import robomasterImage from "../assets/robomaster-hero.jpg";
+
 export interface ExternalLink {
   label: string;
   href: string;
   kind: "website" | "repository" | "email" | "profile";
   display?: string;
+}
+
+export interface ProjectImage {
+  src: ImageMetadata;
+  alt: string;
 }
 
 export interface Project {
@@ -13,6 +21,7 @@ export interface Project {
   highlights?: readonly string[];
   tags: readonly string[];
   links: readonly ExternalLink[];
+  image?: ProjectImage;
 }
 
 export interface Experience {
@@ -62,13 +71,13 @@ export const profile: SiteProfile = {
       display: "wsw123@mail.ustc.edu.cn",
     },
     {
-      label: "GitHub / wsw12321",
+      label: "GitHub",
       href: "https://github.com/wsw12321",
       kind: "profile",
       display: "github.com/wsw12321",
     },
     {
-      label: "个人站 / water555.com",
+      label: "个人站",
       href: "https://water555.com/",
       kind: "website",
       display: "water555.com",
@@ -90,6 +99,10 @@ export const projects: readonly Project[] = [
     ],
     tags: ["C++", "OpenCV", "ROS2", "Calibration"],
     links: [],
+    image: {
+      src: robomasterImage,
+      alt: "昏暗走廊中亮起红色灯光的 RoboMaster 英雄机器人",
+    },
   },
   {
     number: "02",

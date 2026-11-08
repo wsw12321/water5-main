@@ -2,7 +2,7 @@
 
 ## Project Structure & Module Organization
 
-This repository is an Astro 5 static personal site. `src/pages/index.astro` defines the only route and assembles the homepage. `src/layouts/Layout.astro` provides the HTML shell, metadata, global stylesheet import, and theme behavior. Keep editable profile, project, experience, contact, and SEO content in `src/data/site.ts`; use `content.md` as the source-content brief. Site-wide design tokens and responsive rules live in `src/styles/global.css`. Images processed by Astro belong in `src/assets/`; files that must be copied unchanged belong in `public/`. Generated directories such as `dist/`, `.astro/`, `node_modules/`, and `.pnpm-store/` are not committed.
+This repository is an Astro 5 static personal site. `src/pages/index.astro` defines the only route and assembles the homepage. `src/layouts/Layout.astro` provides the HTML shell, metadata, global stylesheet import, and theme behavior. Small reusable components, such as the inline SVG `Icon.astro`, live in `src/components/`. Keep editable profile, project, experience, contact, and SEO content in `src/data/site.ts`; use `content.md` as the source-content brief. Site-wide design tokens and responsive rules live in `src/styles/global.css`. Images processed by Astro belong in `src/assets/`; files that must be copied unchanged belong in `public/`. Generated directories such as `dist/`, `.astro/`, `node_modules/`, and `.pnpm-store/` are not committed.
 
 ## Build, Test, and Development Commands
 
